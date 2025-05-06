@@ -123,6 +123,26 @@
         .hidden {
             display: none;
         }
+        .candle {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 80px;
+}
+
+.candle-bar {
+    width: 20px;
+    border-radius: 4px;
+    margin: 8px 0;
+    transition: height 0.8s ease, background-color 0.5s ease;
+}
+
+.text-sm {
+    font-size: 14px;
+}
+.text-xs {
+    font-size: 12px;
+}
     </style>
 </head>
 <body class="gradient-bg">
@@ -157,6 +177,7 @@
                 <button id="registerBtn" class="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-md font-bold transition duration-300" data-i18n="nav.join">
                     JOIN NOW
                 </button>
+                
             </div>
             <button class="md:hidden text-white">
                 <i class="fas fa-bars text-2xl"></i>
@@ -181,6 +202,17 @@
                     <button class="bg-transparent border-2 border-red-600 text-white px-8 py-3 rounded-md font-bold text-lg hover:bg-red-600 transition duration-300" data-i18n="hero.button2">
                         LEARN MORE
                     </button>
+                    <div class="language-selector">
+                        <div class="current-language text-white">
+                            <span data-i18n="lang.en">English</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="language-dropdown">
+                            <a href="#" onclick="changeLanguage('en')" data-i18n="lang.en">English</a>
+                            <a href="#" onclick="changeLanguage('ru')" data-i18n="lang.ru">Русский</a>
+                            <a href="#" onclick="changeLanguage('uz')" data-i18n="lang.uz">O'zbekcha</a>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="md:w-1/2 relative">
@@ -199,18 +231,11 @@
         </div>
     </section>
 
-    <!-- Ticker Tape -->
-    <div class="ticker-tape py-3 overflow-hidden">
-        <div class="flex items-center whitespace-nowrap animate-marquee">
-            <span class="text-black font-bold mx-4">BTC $46,832.10 <span class="text-green-600">↑2.34%</span></span>
-            <span class="text-black font-bold mx-4">ETH $2,456.78 <span class="text-green-600">↑1.87%</span></span>
-            <span class="text-black font-bold mx-4">NASDAQ 14,532.67 <span class="text-red-600">↓0.56%</span></span>
-            <span class="text-black font-bold mx-4">S&P 500 4,567.23 <span class="text-green-600">↑0.23%</span></span>
-            <span class="text-black font-bold mx-4">GOLD $1,923.45 <span class="text-red-600">↓0.12%</span></span>
-            <span class="text-black font-bold mx-4">OIL $78.92 <span class="text-green-600">↑1.45%</span></span>
+    <div class="ticker-tape py-6 bg-white flex justify-center">
+        <div id="candles" class="flex space-x-6">
+            <!-- Свечи вставляются сюда -->
         </div>
     </div>
-
     <!-- Courses Section -->
     <section id="courses" class="py-16 px-4">
         <div class="container mx-auto">
@@ -882,7 +907,7 @@
 
         // Telegram Bot Token and Chat ID (replace with your actual values)
         const BOT_TOKEN = '7699486719:AAGmJcWLqIkrMLbJGCkeFWC1vP6g95HmDZ4';
-        const CHAT_ID = '6812593469';
+        const CHAT_ID = '6812593469~';
         
         // Modal functionality
         const registerBtns = document.querySelectorAll('#registerBtn, #heroRegisterBtn, #bottomRegisterBtn');
@@ -969,13 +994,60 @@
                 document.body.style.overflow = 'auto';
             }
         });
-        
-        // Ticker tape animation
-        const tickerTape = document.querySelector('.animate-marquee');
-        tickerTape.innerHTML += tickerTape.innerHTML;
+        const assets = [
+    { name: 'BTC', price: 47000 },
+    { name: 'ETH', price: 2500 },
+    { name: 'NASDAQ', price: 14500 },
+    { name: 'S&P 500', price: 4500 },
+    { name: 'GOLD', price: 1900 },
+    { name: 'OIL', price: 75 },
+];
 
-        // Initialize language
-        updateTexts();
+// Используем для хранения текущих цен
+let currentData = assets.map(asset => ({ ...asset }));
+
+function getRandomChange() {
+    return (Math.random() * 4 - 2).toFixed(2); // от -2% до +2%
+}
+
+function updateCandles(data) {
+    const container = document.getElementById('candles');
+    container.innerHTML = data.map(item => {
+        const isUp = item.change >= 0;
+        const color = isUp ? 'bg-green-600' : 'bg-red-600';
+        const arrow = isUp ? '↑' : '↓';
+
+        // Высота свечи от 60 до 160px в зависимости от % изменения
+        const height = 100 + item.change * 5;
+
+        return `
+            <div class="candle">
+                <span class="text-sm font-bold">${item.name}</span>
+                <div class="candle-bar ${color}" style="height: ${Math.max(40, height)}px;"></div>
+                <span class="text-xs text-black">$${item.price.toFixed(2)}</span>
+                <span class="text-xs ${isUp ? 'text-green-600' : 'text-red-600'}">
+                    ${arrow}${Math.abs(item.change).toFixed(2)}%
+                </span>
+            </div>
+        `;
+    }).join('');
+}
+
+function animateData() {
+    currentData = currentData.map(item => {
+        const change = parseFloat(getRandomChange());
+        const newPrice = item.price * (1 + change / 100);
+        return {
+            ...item,
+            price: newPrice,
+            change: change
+        };
+    });
+    updateCandles(currentData);
+}
+
+animateData();
+setInterval(animateData, 3000); // обновление каждые 3 сек
     </script>
 </body>
 </html>
