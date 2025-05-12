@@ -13,6 +13,7 @@
             font-family: 'Montserrat', sans-serif;
             background-color: #0a0a0a;
             color: #e0e0e0;
+            overflow: hidden;
         }
         
         .gradient-bg {
@@ -124,82 +125,132 @@
             display: none;
         }
         .candle {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 80px;
-}
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 80px;
+        }
 
-.candle-bar {
-    width: 20px;
-    border-radius: 4px;
-    margin: 8px 0;
-    transition: height 0.8s ease, background-color 0.5s ease;
-}
+        .candle-bar {
+            width: 20px;
+            border-radius: 4px;
+            margin: 8px 0;
+            transition: height 0.8s ease, background-color 0.5s ease;
+        }
 
-.text-sm {
-    font-size: 14px;
-}
-.text-xs {
-    font-size: 12px;
-}
+        .text-sm {
+            font-size: 14px;
+        }
+        .text-xs {
+            font-size: 12px;
+        }
+        
+        /* Loading Screen Styles */
+        #loadingScreen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #000;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 1s ease-out;
+        }
+        
+        .logo-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 40px;
+        }
+        
+        .logo-circle {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background-color: #e63946;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 30px;
+            animation: pulse 2s infinite;
+        }
+        
+        .logo-text {
+            font-size: 3rem;
+            font-weight: 900;
+            color: white;
+            text-align: center;
+            line-height: 1.2;
+        }
+        
+        .logo-subtext {
+            font-size: 1.5rem;
+            color: #e63946;
+            margin-top: 10px;
+            font-weight: 700;
+        }
+        
+        .loading-bar {
+            width: 300px;
+            height: 4px;
+            background-color: #333;
+            border-radius: 2px;
+            overflow: hidden;
+            margin-top: 30px;
+        }
+        
+        .loading-progress {
+            height: 100%;
+            background-color: #e63946;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(230, 57, 70, 0.7); }
+            50% { transform: scale(1.05); box-shadow: 0 0 0 15px rgba(230, 57, 70, 0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(230, 57, 70, 0); }
+        }
     </style>
 </head>
 <body class="gradient-bg">
-    <!-- Top Navigation -->
-    <nav class="border-b border-gray-800 py-4">
-        <div class="container mx-auto px-4 flex justify-between items-center">
-            <div class="flex items-center space-x-2">
-                
-                <div class="w-10 h-10 rounded-full aggressive-red flex items-center justify-center">
-                    <i class="fas fa-chart-line text-white text-xl"></i>
-                </div>
-                <h1 class="text-2xl font-bold text-white">T.S.T <span class="text-red-500">INVESTMENT</span></h1>
+    <!-- Loading Screen -->
+    <div id="loadingScreen">
+        <div class="logo-container">
+            <div class="logo-circle">
+                <i class="fas fa-chart-line text-white text-5xl"></i>
             </div>
-            <div class="hidden md:flex space-x-8 items-center">
-                <a href="#courses" class="text-gray-300 hover:text-white font-medium" data-i18n="nav.courses">Courses</a>
-                <a href="#about" class="text-gray-300 hover:text-white font-medium" data-i18n="nav.about">About Us</a>
-                <a href="#testimonials" class="text-gray-300 hover:text-white font-medium" data-i18n="nav.stories">Success Stories</a>
-                <a href="#contact" class="text-gray-300 hover:text-white font-medium" data-i18n="nav.contact">Contact</a>
-                
-                <!-- Language Selector -->
-                <div class="language-selector">
-                    <div class="current-language text-white">
-                        <span data-i18n="lang.en">English</span>
-                        <i class="fas fa-chevron-down"></i>
-                    </div>
-                    <div class="language-dropdown">
-                        <a href="#" onclick="changeLanguage('en')" data-i18n="lang.en">English</a>
-                        <a href="#" onclick="changeLanguage('ru')" data-i18n="lang.ru">Русский</a>
-                        <a href="#" onclick="changeLanguage('uz')" data-i18n="lang.uz">O'zbekcha</a>
-                    </div>
-                </div>
-                
-                <button id="registerBtn" class="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-md font-bold transition duration-300" data-i18n="nav.join">
-                    JOIN NOW
-                </button>
-            </div>
-            <button class="md:hidden text-white">
-                <i class="fas fa-bars text-2xl"></i>
-            </button>
+            <div class="logo-text">T.S.T<br>INVESTMENT<br>COMPANY</div>
+            <div class="logo-subtext">Professional Trading Platform</div>
         </div>
-    </nav>
+        <div class="loading-bar">
+            <div class="loading-progress" id="loadingProgress"></div>
+        </div>
+    </div>
 
-    <!-- Hero Section -->
-    <section class="py-20 px-4">
-        <div class="container mx-auto flex flex-col md:flex-row items-center">
-            
-            <div class="md:w-1/2 mb-10 md:mb-0">
-                <h2 class="text-4xl md:text-6xl font-bold text-white mb-6" data-i18n="hero.title">
-                    DOMINATE THE <span class="text-red-500">MARKETS</span> WITH OUR EXPERTISE
-                </h2>
-                <p class="text-xl text-gray-300 mb-8" data-i18n="hero.subtitle">
-                    Join T.S.T Investment Company and gain access to exclusive trading strategies, professional mentorship, and a community of successful traders.
-                </p>
-                <div class="flex space-x-4">
-                    <button id="heroRegisterBtn" class="aggressive-red text-white px-8 py-3 rounded-md font-bold text-lg hover:shadow-lg transition duration-300" data-i18n="hero.button1">
-                        START TRADING NOW
-                    </button>
+    <!-- Main Content (initially hidden) -->
+    <div id="mainContent" class="hidden">
+        <!-- Top Navigation -->
+        <nav class="border-b border-gray-800 py-4">
+            <div class="container mx-auto px-4 flex justify-between items-center">
+                <div class="flex items-center space-x-2">
+                    <div class="w-10 h-10 rounded-full aggressive-red flex items-center justify-center">
+                        <i class="fas fa-chart-line text-white text-xl"></i>
+                    </div>
+                    <h1 class="text-2xl font-bold text-white">T.S.T <span class="text-red-500">INVESTMENT</span></h1>
+                </div>
+                <div class="hidden md:flex space-x-8 items-center">
+                    <a href="#courses" class="text-gray-300 hover:text-white font-medium" data-i18n="nav.courses">Courses</a>
+                    <a href="#about" class="text-gray-300 hover:text-white font-medium" data-i18n="nav.about">About Us</a>
+                    <a href="#testimonials" class="text-gray-300 hover:text-white font-medium" data-i18n="nav.stories">Success Stories</a>
+                    <a href="#contact" class="text-gray-300 hover:text-white font-medium" data-i18n="nav.contact">Contact</a>
+                    
+                    <!-- Language Selector -->
                     <div class="language-selector">
                         <div class="current-language text-white">
                             <span data-i18n="lang.en">English</span>
@@ -211,379 +262,489 @@
                             <a href="#" onclick="changeLanguage('uz')" data-i18n="lang.uz">O'zbekcha</a>
                         </div>
                     </div>
-                </div>
-            </div>
-            <div class="md:w-1/2 relative">
-                <div class="bg-gray-900 rounded-xl p-6 glow" style="background-image: url('https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80'); background-size: cover; background-position: center; height: 400px;">
-                    <div class="absolute inset-0 bg-black bg-opacity-60 rounded-xl"></div>
-                    <div class="relative z-10 h-full flex flex-col justify-center items-center text-center">
-                        <h3 class="text-3xl font-bold text-white mb-4" data-i18n="hero.cardTitle">YOUR PATH TO <span class="text-red-500">FINANCIAL FREEDOM</span></h3>
-                        <p class="text-xl text-gray-300 mb-6" data-i18n="hero.cardSubtitle">Starts with one decision</p>
-                        <div class="flex items-center space-x-2">
-                            <div class="w-3 h-3 rounded-full bg-red-500 blink"></div>
-                            <span class="text-white" data-i18n="hero.live">LIVE TRADING ROOM ACCESS</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <div class="ticker-tape py-6 bg-white flex justify-center">
-        <div id="candles" class="flex space-x-6">
-            <!-- Свечи вставляются сюда -->
-        </div>
-    </div>
-    <!-- Courses Section -->
-    <section id="courses" class="py-16 px-4">
-        <div class="container mx-auto">
-            <h2 class="text-3xl md:text-4xl font-bold text-white text-center mb-4" data-i18n="courses.title">OUR <span class="text-red-500">EXCLUSIVE</span> COURSES</h2>
-            <p class="text-xl text-gray-400 text-center mb-12 max-w-3xl mx-auto" data-i18n="courses.subtitle">
-                Designed by professional traders with years of market experience. Choose your path to success.
-            </p>
-            
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <!-- Course 1 -->
-                <div class="trading-card rounded-xl p-6">
-                    <div class="flex justify-between items-start mb-6">
-                        <h3 class="text-2xl font-bold text-white" data-i18n="courses.course1.title">BEGINNER TO PRO</h3>
-                        <span class="bg-red-600 text-white text-xs font-bold px-3 py-1 rounded-full" data-i18n="courses.bestseller">BEST SELLER</span>
-                    </div>
-                    <p class="text-gray-400 mb-6" data-i18n="courses.course1.description">
-                        Master the fundamentals of trading and build a solid foundation for your trading career.
-                    </p>
-                    <ul class="space-y-3 mb-8">
-                        <li class="flex items-center">
-                            <i class="fas fa-check-circle text-green-500 mr-2"></i>
-                            <span class="text-gray-300" data-i18n="courses.course1.feature1">Market Basics & Terminology</span>
-                        </li>
-                        <li class="flex items-center">
-                            <i class="fas fa-check-circle text-green-500 mr-2"></i>
-                            <span class="text-gray-300" data-i18n="courses.course1.feature2">Technical Analysis Fundamentals</span>
-                        </li>
-                        <li class="flex items-center">
-                            <i class="fas fa-check-circle text-green-500 mr-2"></i>
-                            <span class="text-gray-300" data-i18n="courses.course1.feature3">Risk Management Strategies</span>
-                        </li>
-                        <li class="flex items-center">
-                            <i class="fas fa-check-circle text-green-500 mr-2"></i>
-                            <span class="text-gray-300" data-i18n="courses.course1.feature4">Live Trading Sessions</span>
-                        </li>
-                    </ul>
-                    <div class="mb-6">
-                        <span class="text-3xl font-bold text-white">$300</span>
-                        <span class="text-gray-400 line-through ml-2">$500</span>
-                    </div>
-                    <button class="w-full aggressive-red text-white py-3 rounded-md font-bold hover:shadow-lg transition duration-300" data-i18n="courses.enroll">
-                        ENROLL NOW
+                    
+                    <button id="registerBtn" class="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-md font-bold transition duration-300" data-i18n="nav.join">
+                        JOIN NOW
                     </button>
                 </div>
-                
-                <!-- Course 2 -->
-                <div class="trading-card rounded-xl p-6 relative overflow-hidden">
-                    <div class="absolute top-0 right-0 bg-red-600 text-white text-xs font-bold px-3 py-1 transform rotate-45 translate-x-8 translate-y-6 w-48 text-center" data-i18n="courses.popular">
-                        MOST POPULAR
-                    </div>
-                    <div class="flex justify-between items-start mb-6">
-                        <h3 class="text-2xl font-bold text-white" data-i18n="courses.course2.title">ADVANCED STRATEGIES</h3>
-                        <span class="bg-blue-600 text-white text-xs font-bold px-3 py-1 rounded-full" data-i18n="courses.new">NEW</span>
-                    </div>
-                    <p class="text-gray-400 mb-6" data-i18n="courses.course2.description">
-                        Take your trading to the next level with our advanced technical and fundamental analysis techniques.
-                    </p>
-                    <ul class="space-y-3 mb-8">
-                        <li class="flex items-center">
-                            <i class="fas fa-check-circle text-green-500 mr-2"></i>
-                            <span class="text-gray-300" data-i18n="courses.course2.feature1">Advanced Chart Patterns</span>
-                        </li>
-                        <li class="flex items-center">
-                            <i class="fas fa-check-circle text-green-500 mr-2"></i>
-                            <span class="text-gray-300" data-i18n="courses.course2.feature2">Algorithmic Trading Basics</span>
-                        </li>
-                        <li class="flex items-center">
-                            <i class="fas fa-check-circle text-green-500 mr-2"></i>
-                            <span class="text-gray-300" data-i18n="courses.course2.feature3">Options & Futures Strategies</span>
-                        </li>
-                        <li class="flex items-center">
-                            <i class="fas fa-check-circle text-green-500 mr-2"></i>
-                            <span class="text-gray-300" data-i18n="courses.course2.feature4">Private Discord Community</span>
-                        </li>
-                    </ul>
-                    
-    </section>
-
-    <!-- About Section -->
-    <section id="about" class="py-16 px-4 bg-black bg-opacity-50">
-        <div class="container mx-auto">
-            <div class="flex flex-col md:flex-row items-center">
-                <div class="md:w-1/2 mb-10 md:mb-0 md:pr-10">
-                    <h2 class="text-3xl md:text-4xl font-bold text-white mb-6" data-i18n="about.title">WHY <span class="text-red-500">T.S.T</span> INVESTMENT?</h2>
-                    <p class="text-gray-400 mb-6 text-lg" data-i18n="about.subtitle">
-                        We're not just another trading education company. Our team consists of former hedge fund managers, proprietary traders, and market makers with decades of combined experience.
-                    </p>
-                    <div class="space-y-6">
-                        <div class="flex items-start">
-                            <div class="bg-red-600 p-2 rounded-full mr-4 mt-1">
-                                <i class="fas fa-chart-pie text-white"></i>
-                            </div>
-                            <div>
-                                <h4 class="text-xl font-bold text-white mb-2" data-i18n="about.feature1.title">Real Market Experience</h4>
-                                <p class="text-gray-400" data-i18n="about.feature1.description">
-                                    Our strategies are battle-tested in live markets, not just theoretical concepts.
-                                </p>
-                            </div>
-                        </div>
-                        <div class="flex items-start">
-                            <div class="bg-red-600 p-2 rounded-full mr-4 mt-1">
-                                <i class="fas fa-users text-white"></i>
-                            </div>
-                            <div>
-                                <h4 class="text-xl font-bold text-white mb-2" data-i18n="about.feature2.title">Community Support</h4>
-                                <p class="text-gray-400" data-i18n="about.feature2.description">
-                                    Join our exclusive community of traders where we share ideas and strategies daily.
-                                </p>
-                            </div>
-                        </div>
-                        <div class="flex items-start">
-                            <div class="bg-red-600 p-2 rounded-full mr-4 mt-1">
-                                <i class="fas fa-lock text-white"></i>
-                            </div>
-                            <div>
-                                <h4 class="text-xl font-bold text-white mb-2" data-i18n="about.feature3.title">Risk Management First</h4>
-                                <p class="text-gray-400" data-i18n="about.feature3.description">
-                                    We teach you how to protect your capital before teaching you how to grow it.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="md:w-1/2">
-                    <div class="bg-gray-900 rounded-xl overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1606326608606-aa0b629e7274?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Trading Team" class="w-full h-auto opacity-90">
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Testimonials -->
-    <section id="testimonials" class="py-16 px-4">
-        <div class="container mx-auto">
-            <h2 class="text-3xl md:text-4xl font-bold text-white text-center mb-4" data-i18n="testimonials.title">SUCCESS <span class="text-red-500">STORIES</span></h2>
-            <p class="text-xl text-gray-400 text-center mb-12 max-w-3xl mx-auto" data-i18n="testimonials.subtitle">
-                Don't just take our word for it. Here's what our students have to say.
-            </p>
-            
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <!-- Testimonial 1 -->
-                <div class="bg-gray-900 rounded-xl p-6 border-l-4 border-red-600">
-                    <div class="flex items-center mb-4">
-                        <div class="w-12 h-12 rounded-full bg-gray-700 flex items-center justify-center mr-4">
-                            <i class="fas fa-user text-gray-400 text-xl"></i>
-                        </div>
-                        <div>
-                            <h4 class="text-white font-bold">Michael R.</h4>
-                            <p class="text-gray-500 text-sm" data-i18n="testimonials.role1">Forex Trader</p>
-                        </div>
-                    </div>
-                    <p class="text-gray-300 italic" data-i18n="testimonials.text1">
-                        "After taking the Advanced Strategies course, I went from losing money to consistently profitable. The risk management techniques alone were worth the price."
-                    </p>
-                    <div class="flex mt-4">
-                        <i class="fas fa-star text-yellow-400"></i>
-                        <i class="fas fa-star text-yellow-400"></i>
-                        <i class="fas fa-star text-yellow-400"></i>
-                        <i class="fas fa-star text-yellow-400"></i>
-                        <i class="fas fa-star text-yellow-400"></i>
-                    </div>
-                </div>
-                
-                <!-- Testimonial 2 -->
-                <div class="bg-gray-900 rounded-xl p-6 border-l-4 border-red-600">
-                    <div class="flex items-center mb-4">
-                        <div class="w-12 h-12 rounded-full bg-gray-700 flex items-center justify-center mr-4">
-                            <i class="fas fa-user text-gray-400 text-xl"></i>
-                        </div>
-                        <div>
-                            <h4 class="text-white font-bold">Sarah K.</h4>
-                            <p class="text-gray-500 text-sm" data-i18n="testimonials.role2">Crypto Trader</p>
-                        </div>
-                    </div>
-                    <p class="text-gray-300 italic" data-i18n="testimonials.text2">
-                        "The Elite Mastermind program transformed my trading completely. The 1-on-1 sessions helped me identify my weaknesses and turn them into strengths."
-                    </p>
-                    <div class="flex mt-4">
-                        <i class="fas fa-star text-yellow-400"></i>
-                        <i class="fas fa-star text-yellow-400"></i>
-                        <i class="fas fa-star text-yellow-400"></i>
-                        <i class="fas fa-star text-yellow-400"></i>
-                        <i class="fas fa-star text-yellow-400"></i>
-                    </div>
-                </div>
-                
-                <!-- Testimonial 3 -->
-                <div class="bg-gray-900 rounded-xl p-6 border-l-4 border-red-600">
-                    <div class="flex items-center mb-4">
-                        <div class="w-12 h-12 rounded-full bg-gray-700 flex items-center justify-center mr-4">
-                            <i class="fas fa-user text-gray-400 text-xl"></i>
-                        </div>
-                        <div>
-                            <h4 class="text-white font-bold">David L.</h4>
-                            <p class="text-gray-500 text-sm" data-i18n="testimonials.role3">Stock Trader</p>
-                        </div>
-                    </div>
-                    <p class="text-gray-300 italic" data-i18n="testimonials.text3">
-                        "I was skeptical at first, but the Beginner to Pro course gave me the foundation I needed. Now I trade full-time and have replaced my corporate income."
-                    </p>
-                    <div class="flex mt-4">
-                        <i class="fas fa-star text-yellow-400"></i>
-                        <i class="fas fa-star text-yellow-400"></i>
-                        <i class="fas fa-star text-yellow-400"></i>
-                        <i class="fas fa-star text-yellow-400"></i>
-                        <i class="fas fa-star-half-alt text-yellow-400"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- CTA Section -->
-    <section class="py-16 px-4 bg-black bg-opacity-50">
-        <div class="container mx-auto text-center">
-            <h2 class="text-3xl md:text-4xl font-bold text-white mb-6" data-i18n="cta.title">READY TO TRANSFORM YOUR <span class="text-red-500">TRADING</span>?</h2>
-            <p class="text-xl text-gray-400 mb-8 max-w-2xl mx-auto" data-i18n="cta.subtitle">
-                Join hundreds of successful traders who have changed their financial future with our proven strategies.
-            </p>
-            <button id="bottomRegisterBtn" class="aggressive-red text-white px-12 py-4 rounded-md font-bold text-xl hover:shadow-xl transition duration-300" data-i18n="cta.button">
-                START YOUR JOURNEY TODAY
-            </button>
-        </div>
-    </section>
-
-    <!-- Registration Modal -->
-    <div id="registrationModal" class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 hidden">
-        <div class="bg-gray-900 rounded-xl p-8 max-w-md w-full mx-4 border border-gray-800 relative">
-            <button id="closeModal" class="absolute top-4 right-4 text-gray-400 hover:text-white">
-                <i class="fas fa-times text-2xl"></i>
-            </button>
-            <h3 class="text-2xl font-bold text-white mb-2" data-i18n="modal.title">JOIN T.S.T INVESTMENT</h3>
-            <p class="text-gray-400 mb-6" data-i18n="modal.subtitle">Fill out the form below to begin your trading journey</p>
-            
-            <form id="registrationForm" class="space-y-4">
-                <div>
-                    <label for="firstName" class="block text-gray-300 mb-2" data-i18n="modal.firstName">First Name</label>
-                    <input type="text" id="firstName" class="w-full form-input px-4 py-3 rounded-md" required>
-                </div>
-                <div>
-                    <label for="lastName" class="block text-gray-300 mb-2" data-i18n="modal.lastName">Last Name</label>
-                    <input type="text" id="lastName" class="w-full form-input px-4 py-3 rounded-md" required>
-                </div>
-                <div>
-                    <label for="email" class="block text-gray-300 mb-2" data-i18n="modal.email">Email</label>
-                    <input type="email" id="email" class="w-full form-input px-4 py-3 rounded-md" required>
-                </div>
-                <div>
-                    <label for="age" class="block text-gray-300 mb-2" data-i18n="modal.age">Age</label>
-                    <input type="number" id="age" min="18" class="w-full form-input px-4 py-3 rounded-md" required>
-                </div>
-                <div>
-                    <label for="investment" class="block text-gray-300 mb-2" data-i18n="modal.investment">Initial Investment Amount ($)</label>
-                    <input type="number" id="investment" min="100" class="w-full form-input px-4 py-3 rounded-md" required>
-                </div>
-                <div class="flex items-center">
-                    <input type="checkbox" id="terms" class="form-checkbox h-5 w-5 text-red-600" required>
-                    <label for="terms" class="ml-2 text-gray-300" data-i18n="modal.terms">I agree to the <a href="#" class="text-red-500 hover:underline">Terms & Conditions</a></label>
-                </div>
-                <button type="submit" class="w-full aggressive-red text-white py-3 rounded-md font-bold hover:shadow-lg transition duration-300 mt-4" data-i18n="modal.submit">
-                    SUBMIT APPLICATION
+                <button class="md:hidden text-white">
+                    <i class="fas fa-bars text-2xl"></i>
                 </button>
-            </form>
-        </div>
-    </div>
-
-    <!-- Success Modal -->
-    <div id="successModal" class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 hidden">
-        <div class="bg-gray-900 rounded-xl p-8 max-w-md w-full mx-4 border border-green-500 text-center">
-            <div class="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-6">
-                <i class="fas fa-check text-white text-2xl"></i>
             </div>
-            <h3 class="text-2xl font-bold text-white mb-4" data-i18n="success.title">APPLICATION SUBMITTED!</h3>
-            <p class="text-gray-300 mb-6" data-i18n="success.message">
-                Thank you for your interest in T.S.T Investment Company. Our team will review your application and contact you within 24 hours.
-            </p>
-            <button id="closeSuccessModal" class="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-md font-bold transition duration-300" data-i18n="success.button">
-                CLOSE
-            </button>
-        </div>
-    </div>
+        </nav>
 
-    <!-- Footer -->
-    <footer id="contact" class="bg-black bg-opacity-50 py-12 px-4 border-t border-gray-800">
-        <div class="container mx-auto">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-                <div>
-                    <div class="flex items-center space-x-2 mb-4">
-                        <div class="w-10 h-10 rounded-full aggressive-red flex items-center justify-center">
-                            <i class="fas fa-chart-line text-white text-xl"></i>
-                        </div>
-                        <h1 class="text-xl font-bold text-white">T.S.T <span class="text-red-500">INVESTMENT</span></h1>
-                    </div>
-                    <p class="text-gray-400" data-i18n="footer.description">
-                        Professional trading education and mentorship for serious traders.
+        <!-- Hero Section -->
+        <section class="py-20 px-4">
+            <div class="container mx-auto flex flex-col md:flex-row items-center">
+                <div class="md:w-1/2 mb-10 md:mb-0">
+                    <h2 class="text-4xl md:text-6xl font-bold text-white mb-6" data-i18n="hero.title">
+                        DOMINATE THE <span class="text-red-500">MARKETS</span> WITH OUR EXPERTISE
+                    </h2>
+                    <p class="text-xl text-gray-300 mb-8" data-i18n="hero.subtitle">
+                        Join T.S.T Investment Company and gain access to exclusive trading strategies, professional mentorship, and a community of successful traders.
                     </p>
+                    <div class="flex space-x-4">
+                        <button id="heroRegisterBtn" class="aggressive-red text-white px-8 py-3 rounded-md font-bold text-lg hover:shadow-lg transition duration-300" data-i18n="hero.button1">
+                            START TRADING NOW
+                        </button>
+                        <div class="language-selector">
+                            <div class="current-language text-white">
+                                <span data-i18n="lang.en">English</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                            <div class="language-dropdown">
+                                <a href="#" onclick="changeLanguage('en')" data-i18n="lang.en">English</a>
+                                <a href="#" onclick="changeLanguage('ru')" data-i18n="lang.ru">Русский</a>
+                                <a href="#" onclick="changeLanguage('uz')" data-i18n="lang.uz">O'zbekcha</a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div>
-                    <h4 class="text-white font-bold text-lg mb-4" data-i18n="footer.links">QUICK LINKS</h4>
-                    <ul class="space-y-2">
-                        <li><a href="#courses" class="text-gray-400 hover:text-white" data-i18n="nav.courses">Courses</a></li>
-                        <li><a href="#about" class="text-gray-400 hover:text-white" data-i18n="nav.about">About Us</a></li>
-                        <li><a href="#testimonials" class="text-gray-400 hover:text-white" data-i18n="nav.stories">Success Stories</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white" data-i18n="footer.blog">Blog</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h4 class="text-white font-bold text-lg mb-4" data-i18n="footer.legal">LEGAL</h4>
-                    <ul class="space-y-2">
-                        <li><a href="#" class="text-gray-400 hover:text-white" data-i18n="footer.terms">Terms of Service</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white" data-i18n="footer.privacy">Privacy Policy</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white" data-i18n="footer.risk">Risk Disclosure</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white" data-i18n="footer.refund">Refund Policy</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h4 class="text-white font-bold text-lg mb-4" data-i18n="footer.contact">CONTACT US</h4>
-                    <ul class="space-y-3">
-                        <li class="flex items-center">
-                            <i class="fas fa-envelope text-red-500 mr-3"></i>
-                            <span class="text-gray-400">support@tstinvestment.com</span>
-                        </li>
-                        <li class="flex items-center">
-                            <i class="fas fa-phone-alt text-red-500 mr-3"></i>
-                            <span class="text-gray-400">+1 (555) 123-4567</span>
-                        </li>
-                        <li class="flex items-center">
-                            <i class="fab fa-telegram text-red-500 mr-3"></i>
-                            <span class="text-gray-400">@TST_Investment</span>
-                        </li>
-                    </ul>
+                <div class="md:w-1/2 relative">
+                    <div class="bg-gray-900 rounded-xl p-6 glow" style="background-image: url('https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80'); background-size: cover; background-position: center; height: 400px;">
+                        <div class="absolute inset-0 bg-black bg-opacity-60 rounded-xl"></div>
+                        <div class="relative z-10 h-full flex flex-col justify-center items-center text-center">
+                            <h3 class="text-3xl font-bold text-white mb-4" data-i18n="hero.cardTitle">YOUR PATH TO <span class="text-red-500">FINANCIAL FREEDOM</span></h3>
+                            <p class="text-xl text-gray-300 mb-6" data-i18n="hero.cardSubtitle">Starts with one decision</p>
+                            <div class="flex items-center space-x-2">
+                                <div class="w-3 h-3 rounded-full bg-red-500 blink"></div>
+                                <span class="text-white" data-i18n="hero.live">LIVE TRADING ROOM ACCESS</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="border-t border-gray-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
-                <p class="text-gray-500 mb-4 md:mb-0" data-i18n="footer.copyright">
-                    © 2023 T.S.T Investment Company. All rights reserved.
-                </p>
-                <div class="flex space-x-6">
-                    <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-twitter"></i></a>
-                    <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-instagram"></i></a>
-                    <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-linkedin-in"></i></a>
-                    <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-youtube"></i></a>
-                </div>
+        </section>
+
+        <div class="ticker-tape py-6 bg-white flex justify-center">
+            <div id="candles" class="flex space-x-6">
+                <!-- Свечи вставляются сюда -->
             </div>
         </div>
-    </footer>
+
+        <!-- Courses Section -->
+        <section id="courses" class="py-16 px-4">
+            <div class="container mx-auto">
+                <h2 class="text-3xl md:text-4xl font-bold text-white text-center mb-4" data-i18n="courses.title">OUR <span class="text-red-500">EXCLUSIVE</span> COURSES</h2>
+                <p class="text-xl text-gray-400 text-center mb-12 max-w-3xl mx-auto" data-i18n="courses.subtitle">
+                    Designed by professional traders with years of market experience. Choose your path to success.
+                </p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <!-- Course 1 -->
+                    <div class="trading-card rounded-xl p-6">
+                        <div class="flex justify-between items-start mb-6">
+                            <h3 class="text-2xl font-bold text-white" data-i18n="courses.course1.title">BEGINNER TO PRO</h3>
+                            <span class="bg-red-600 text-white text-xs font-bold px-3 py-1 rounded-full" data-i18n="courses.bestseller">BEST SELLER</span>
+                        </div>
+                        <p class="text-gray-400 mb-6" data-i18n="courses.course1.description">
+                            Master the fundamentals of trading and build a solid foundation for your trading career.
+                        </p>
+                        <ul class="space-y-3 mb-8">
+                            <li class="flex items-center">
+                                <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                                <span class="text-gray-300" data-i18n="courses.course1.feature1">Market Basics & Terminology</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                                <span class="text-gray-300" data-i18n="courses.course1.feature2">Technical Analysis Fundamentals</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                                <span class="text-gray-300" data-i18n="courses.course1.feature3">Risk Management Strategies</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                                <span class="text-gray-300" data-i18n="courses.course1.feature4">Live Trading Sessions</span>
+                            </li>
+                        </ul>
+                        <div class="mb-6">
+                            <span class="text-3xl font-bold text-white">$499</span>
+                            <span class="text-gray-400 line-through ml-2">$799</span>
+                        </div>
+                        <button class="w-full aggressive-red text-white py-3 rounded-md font-bold hover:shadow-lg transition duration-300" data-i18n="courses.enroll">
+                            ENROLL NOW
+                        </button>
+                    </div>
+                    
+                    <!-- Course 2 -->
+                    <div class="trading-card rounded-xl p-6 relative overflow-hidden">
+                        <div class="absolute top-0 right-0 bg-red-600 text-white text-xs font-bold px-3 py-1 transform rotate-45 translate-x-8 translate-y-6 w-48 text-center" data-i18n="courses.popular">
+                            MOST POPULAR
+                        </div>
+                        <div class="flex justify-between items-start mb-6">
+                            <h3 class="text-2xl font-bold text-white" data-i18n="courses.course2.title">ADVANCED STRATEGIES</h3>
+                            <span class="bg-blue-600 text-white text-xs font-bold px-3 py-1 rounded-full" data-i18n="courses.new">NEW</span>
+                        </div>
+                        <p class="text-gray-400 mb-6" data-i18n="courses.course2.description">
+                            Take your trading to the next level with our advanced technical and fundamental analysis techniques.
+                        </p>
+                        <ul class="space-y-3 mb-8">
+                            <li class="flex items-center">
+                                <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                                <span class="text-gray-300" data-i18n="courses.course2.feature1">Advanced Chart Patterns</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                                <span class="text-gray-300" data-i18n="courses.course2.feature2">Algorithmic Trading Basics</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                                <span class="text-gray-300" data-i18n="courses.course2.feature3">Options & Futures Strategies</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                                <span class="text-gray-300" data-i18n="courses.course2.feature4">Private Discord Community</span>
+                            </li>
+                        </ul>
+                        <div class="mb-6">
+                            <span class="text-3xl font-bold text-white">$899</span>
+                            <span class="text-gray-400 line-through ml-2">$1,299</span>
+                        </div>
+                        <button class="w-full aggressive-red text-white py-3 rounded-md font-bold hover:shadow-lg transition duration-300" data-i18n="courses.enroll">
+                            ENROLL NOW
+                        </button>
+                    </div>
+                    
+                    <!-- Course 3 -->
+                    <div class="trading-card rounded-xl p-6">
+                        <div class="flex justify-between items-start mb-6">
+                            <h3 class="text-2xl font-bold text-white" data-i18n="courses.course3.title">ELITE MASTERMIND</h3>
+                            <span class="bg-purple-600 text-white text-xs font-bold px-3 py-1 rounded-full">VIP</span>
+                        </div>
+                        <p class="text-gray-400 mb-6" data-i18n="courses.course3.description">
+                            Our most comprehensive program with 1-on-1 mentorship and exclusive market insights.
+                        </p>
+                        <ul class="space-y-3 mb-8">
+                            <li class="flex items-center">
+                                <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                                <span class="text-gray-300" data-i18n="courses.course3.feature1">Personalized Coaching</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                                <span class="text-gray-300" data-i18n="courses.course3.feature2">Institutional Trading Strategies</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                                <span class="text-gray-300" data-i18n="courses.course3.feature3">Portfolio Management</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                                <span class="text-gray-300" data-i18n="courses.course3.feature4">Weekly Private Sessions</span>
+                            </li>
+                        </ul>
+                        <div class="mb-6">
+                            <span class="text-3xl font-bold text-white">$2,999</span>
+                            <span class="text-gray-400 line-through ml-2">$3,999</span>
+                        </div>
+                        <button class="w-full aggressive-red text-white py-3 rounded-md font-bold hover:shadow-lg transition duration-300" data-i18n="courses.enroll">
+                            ENROLL NOW
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="py-16 px-4 bg-black bg-opacity-50">
+            <div class="container mx-auto">
+                <div class="flex flex-col md:flex-row items-center">
+                    <div class="md:w-1/2 mb-10 md:mb-0 md:pr-10">
+                        <h2 class="text-3xl md:text-4xl font-bold text-white mb-6" data-i18n="about.title">WHY <span class="text-red-500">T.S.T</span> INVESTMENT?</h2>
+                        <p class="text-gray-400 mb-6 text-lg" data-i18n="about.subtitle">
+                            We're not just another trading education company. Our team consists of former hedge fund managers, proprietary traders, and market makers with decades of combined experience.
+                        </p>
+                        <div class="space-y-6">
+                            <div class="flex items-start">
+                                <div class="bg-red-600 p-2 rounded-full mr-4 mt-1">
+                                    <i class="fas fa-chart-pie text-white"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-xl font-bold text-white mb-2" data-i18n="about.feature1.title">Real Market Experience</h4>
+                                    <p class="text-gray-400" data-i18n="about.feature1.description">
+                                        Our strategies are battle-tested in live markets, not just theoretical concepts.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <div class="bg-red-600 p-2 rounded-full mr-4 mt-1">
+                                    <i class="fas fa-users text-white"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-xl font-bold text-white mb-2" data-i18n="about.feature2.title">Community Support</h4>
+                                    <p class="text-gray-400" data-i18n="about.feature2.description">
+                                        Join our exclusive community of traders where we share ideas and strategies daily.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <div class="bg-red-600 p-2 rounded-full mr-4 mt-1">
+                                    <i class="fas fa-lock text-white"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-xl font-bold text-white mb-2" data-i18n="about.feature3.title">Risk Management First</h4>
+                                    <p class="text-gray-400" data-i18n="about.feature3.description">
+                                        We teach you how to protect your capital before teaching you how to grow it.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="md:w-1/2">
+                        <div class="bg-gray-900 rounded-xl overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1606326608606-aa0b629e7274?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Trading Team" class="w-full h-auto opacity-90">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Testimonials -->
+        <section id="testimonials" class="py-16 px-4">
+            <div class="container mx-auto">
+                <h2 class="text-3xl md:text-4xl font-bold text-white text-center mb-4" data-i18n="testimonials.title">SUCCESS <span class="text-red-500">STORIES</span></h2>
+                <p class="text-xl text-gray-400 text-center mb-12 max-w-3xl mx-auto" data-i18n="testimonials.subtitle">
+                    Don't just take our word for it. Here's what our students have to say.
+                </p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <!-- Testimonial 1 -->
+                    <div class="bg-gray-900 rounded-xl p-6 border-l-4 border-red-600">
+                        <div class="flex items-center mb-4">
+                            <div class="w-12 h-12 rounded-full bg-gray-700 flex items-center justify-center mr-4">
+                                <i class="fas fa-user text-gray-400 text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-white font-bold">Michael R.</h4>
+                                <p class="text-gray-500 text-sm" data-i18n="testimonials.role1">Forex Trader</p>
+                            </div>
+                        </div>
+                        <p class="text-gray-300 italic" data-i18n="testimonials.text1">
+                            "After taking the Advanced Strategies course, I went from losing money to consistently profitable. The risk management techniques alone were worth the price."
+                        </p>
+                        <div class="flex mt-4">
+                            <i class="fas fa-star text-yellow-400"></i>
+                            <i class="fas fa-star text-yellow-400"></i>
+                            <i class="fas fa-star text-yellow-400"></i>
+                            <i class="fas fa-star text-yellow-400"></i>
+                            <i class="fas fa-star text-yellow-400"></i>
+                        </div>
+                    </div>
+                    
+                    <!-- Testimonial 2 -->
+                    <div class="bg-gray-900 rounded-xl p-6 border-l-4 border-red-600">
+                        <div class="flex items-center mb-4">
+                            <div class="w-12 h-12 rounded-full bg-gray-700 flex items-center justify-center mr-4">
+                                <i class="fas fa-user text-gray-400 text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-white font-bold">Sarah K.</h4>
+                                <p class="text-gray-500 text-sm" data-i18n="testimonials.role2">Crypto Trader</p>
+                            </div>
+                        </div>
+                        <p class="text-gray-300 italic" data-i18n="testimonials.text2">
+                            "The Elite Mastermind program transformed my trading completely. The 1-on-1 sessions helped me identify my weaknesses and turn them into strengths."
+                        </p>
+                        <div class="flex mt-4">
+                            <i class="fas fa-star text-yellow-400"></i>
+                            <i class="fas fa-star text-yellow-400"></i>
+                            <i class="fas fa-star text-yellow-400"></i>
+                            <i class="fas fa-star text-yellow-400"></i>
+                            <i class="fas fa-star text-yellow-400"></i>
+                        </div>
+                    </div>
+                    
+                    <!-- Testimonial 3 -->
+                    <div class="bg-gray-900 rounded-xl p-6 border-l-4 border-red-600">
+                        <div class="flex items-center mb-4">
+                            <div class="w-12 h-12 rounded-full bg-gray-700 flex items-center justify-center mr-4">
+                                <i class="fas fa-user text-gray-400 text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-white font-bold">David L.</h4>
+                                <p class="text-gray-500 text-sm" data-i18n="testimonials.role3">Stock Trader</p>
+                            </div>
+                        </div>
+                        <p class="text-gray-300 italic" data-i18n="testimonials.text3">
+                            "I was skeptical at first, but the Beginner to Pro course gave me the foundation I needed. Now I trade full-time and have replaced my corporate income."
+                        </p>
+                        <div class="flex mt-4">
+                            <i class="fas fa-star text-yellow-400"></i>
+                            <i class="fas fa-star text-yellow-400"></i>
+                            <i class="fas fa-star text-yellow-400"></i>
+                            <i class="fas fa-star text-yellow-400"></i>
+                            <i class="fas fa-star-half-alt text-yellow-400"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section class="py-16 px-4 bg-black bg-opacity-50">
+            <div class="container mx-auto text-center">
+                <h2 class="text-3xl md:text-4xl font-bold text-white mb-6" data-i18n="cta.title">READY TO TRANSFORM YOUR <span class="text-red-500">TRADING</span>?</h2>
+                <p class="text-xl text-gray-400 mb-8 max-w-2xl mx-auto" data-i18n="cta.subtitle">
+                    Join hundreds of successful traders who have changed their financial future with our proven strategies.
+                </p>
+                <button id="bottomRegisterBtn" class="aggressive-red text-white px-12 py-4 rounded-md font-bold text-xl hover:shadow-xl transition duration-300" data-i18n="cta.button">
+                    START YOUR JOURNEY TODAY
+                </button>
+            </div>
+        </section>
+
+        <!-- Registration Modal -->
+        <div id="registrationModal" class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 hidden">
+            <div class="bg-gray-900 rounded-xl p-8 max-w-md w-full mx-4 border border-gray-800 relative">
+                <button id="closeModal" class="absolute top-4 right-4 text-gray-400 hover:text-white">
+                    <i class="fas fa-times text-2xl"></i>
+                </button>
+                <h3 class="text-2xl font-bold text-white mb-2" data-i18n="modal.title">JOIN T.S.T INVESTMENT</h3>
+                <p class="text-gray-400 mb-6" data-i18n="modal.subtitle">Fill out the form below to begin your trading journey</p>
+                
+                <form id="registrationForm" class="space-y-4">
+                    <div>
+                        <label for="firstName" class="block text-gray-300 mb-2" data-i18n="modal.firstName">First Name</label>
+                        <input type="text" id="firstName" class="w-full form-input px-4 py-3 rounded-md" required>
+                    </div>
+                    <div>
+                        <label for="lastName" class="block text-gray-300 mb-2" data-i18n="modal.lastName">Last Name</label>
+                        <input type="text" id="lastName" class="w-full form-input px-4 py-3 rounded-md" required>
+                    </div>
+                    <div>
+                        <label for="email" class="block text-gray-300 mb-2" data-i18n="modal.email">Email</label>
+                        <input type="email" id="email" class="w-full form-input px-4 py-3 rounded-md" required>
+                    </div>
+                    <div>
+                        <label for="age" class="block text-gray-300 mb-2" data-i18n="modal.age">Age</label>
+                        <input type="number" id="age" min="18" class="w-full form-input px-4 py-3 rounded-md" required>
+                    </div>
+                    <div>
+                        <label for="investment" class="block text-gray-300 mb-2" data-i18n="modal.investment">Initial Investment Amount ($)</label>
+                        <input type="number" id="investment" min="100" class="w-full form-input px-4 py-3 rounded-md" required>
+                    </div>
+                    <div class="flex items-center">
+                        <input type="checkbox" id="terms" class="form-checkbox h-5 w-5 text-red-600" required>
+                        <label for="terms" class="ml-2 text-gray-300" data-i18n="modal.terms">I agree to the <a href="#" class="text-red-500 hover:underline">Terms & Conditions</a></label>
+                    </div>
+                    <button type="submit" class="w-full aggressive-red text-white py-3 rounded-md font-bold hover:shadow-lg transition duration-300 mt-4" data-i18n="modal.submit">
+                        SUBMIT APPLICATION
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Success Modal -->
+        <div id="successModal" class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 hidden">
+            <div class="bg-gray-900 rounded-xl p-8 max-w-md w-full mx-4 border border-green-500 text-center">
+                <div class="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <i class="fas fa-check text-white text-2xl"></i>
+                </div>
+                <h3 class="text-2xl font-bold text-white mb-4" data-i18n="success.title">APPLICATION SUBMITTED!</h3>
+                <p class="text-gray-300 mb-6" data-i18n="success.message">
+                    Thank you for your interest in T.S.T Investment Company. Our team will review your application and contact you within 24 hours.
+                </p>
+                <button id="closeSuccessModal" class="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-md font-bold transition duration-300" data-i18n="success.button">
+                    CLOSE
+                </button>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer id="contact" class="bg-black bg-opacity-50 py-12 px-4 border-t border-gray-800">
+            <div class="container mx-auto">
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                    <div>
+                        <div class="flex items-center space-x-2 mb-4">
+                            <div class="w-10 h-10 rounded-full aggressive-red flex items-center justify-center">
+                                <i class="fas fa-chart-line text-white text-xl"></i>
+                            </div>
+                            <h1 class="text-xl font-bold text-white">T.S.T <span class="text-red-500">INVESTMENT</span></h1>
+                        </div>
+                        <p class="text-gray-400" data-i18n="footer.description">
+                            Professional trading education and mentorship for serious traders.
+                        </p>
+                    </div>
+                    <div>
+                        <h4 class="text-white font-bold text-lg mb-4" data-i18n="footer.links">QUICK LINKS</h4>
+                        <ul class="space-y-2">
+                            <li><a href="#courses" class="text-gray-400 hover:text-white" data-i18n="nav.courses">Courses</a></li>
+                            <li><a href="#about" class="text-gray-400 hover:text-white" data-i18n="nav.about">About Us</a></li>
+                            <li><a href="#testimonials" class="text-gray-400 hover:text-white" data-i18n="nav.stories">Success Stories</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-white" data-i18n="footer.blog">Blog</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="text-white font-bold text-lg mb-4" data-i18n="footer.legal">LEGAL</h4>
+                        <ul class="space-y-2">
+                            <li><a href="#" class="text-gray-400 hover:text-white" data-i18n="footer.terms">Terms of Service</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-white" data-i18n="footer.privacy">Privacy Policy</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-white" data-i18n="footer.risk">Risk Disclosure</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-white" data-i18n="footer.refund">Refund Policy</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="text-white font-bold text-lg mb-4" data-i18n="footer.contact">CONTACT US</h4>
+                        <ul class="space-y-3">
+                            <li class="flex items-center">
+                                <i class="fas fa-envelope text-red-500 mr-3"></i>
+                                <span class="text-gray-400">support@tstinvestment.com</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-phone-alt text-red-500 mr-3"></i>
+                                <span class="text-gray-400">+1 (555) 123-4567</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fab fa-telegram text-red-500 mr-3"></i>
+                                <span class="text-gray-400">@TST_Investment</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="border-t border-gray-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
+                    <p class="text-gray-500 mb-4 md:mb-0" data-i18n="footer.copyright">
+                        © 2023 T.S.T Investment Company. All rights reserved.
+                    </p>
+                    <div class="flex space-x-6">
+                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
 
     <script>
+        // Loading Screen Animation
+        document.addEventListener('DOMContentLoaded', function() {
+            const loadingScreen = document.getElementById('loadingScreen');
+            const loadingProgress = document.getElementById('loadingProgress');
+            const mainContent = document.getElementById('mainContent');
+            
+            // Simulate loading progress
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += Math.random() * 10;
+                if (progress > 100) progress = 100;
+                loadingProgress.style.width = progress + '%';
+                
+                if (progress >= 100) {
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        loadingScreen.style.opacity = '0';
+                        setTimeout(() => {
+                            loadingScreen.style.display = 'none';
+                            mainContent.classList.remove('hidden');
+                            document.body.style.overflow = 'auto';
+                        }, 1000);
+                    }, 500);
+                }
+            }, 200);
+        });
+
         // Language translations
         const translations = {
             en: {
@@ -685,7 +846,7 @@
                 "hero.cardSubtitle": "Начинается с одного решения",
                 "hero.live": "ДОСТУП В ТОРГОВЫЙ ЗАЛ",
                 "courses.title": "НАШИ <span class='text-red-500'>ЭКСКЛЮЗИВНЫЕ</span> КУРСЫ",
-                "courses.subtitle": "Разработаны профессиональными трейдерами с многолетним опытом работы на рынке. Выберите свой путь к успеху.",
+                "courses.subtitle": "Разработаны профессиональными трейдерми с многолетним опытом работы на рынке. Выберите свой путь к успеху.",
                 "courses.bestseller": "БЕСТСЕЛЛЕР",
                 "courses.popular": "САМЫЙ ПОПУЛЯРНЫЙ",
                 "courses.new": "НОВИНКА",
@@ -879,7 +1040,7 @@
         
         closeModal.addEventListener('click', () => {
             registrationModal.classList.add('hidden');
-            document.body.style.overflow = 'auto';
+                document.body.style.overflow = 'auto';
         });
         
         closeSuccessModal.addEventListener('click', () => {
@@ -947,60 +1108,61 @@
                 document.body.style.overflow = 'auto';
             }
         });
+
         const assets = [
-    { name: 'BTC', price: 47000 },
-    { name: 'ETH', price: 2500 },
-    { name: 'NASDAQ', price: 14500 },
-    { name: 'S&P 500', price: 4500 },
-    { name: 'GOLD', price: 1900 },
-    { name: 'OIL', price: 75 },
-];
+            { name: 'BTC', price: 47000 },
+            { name: 'ETH', price: 2500 },
+            { name: 'NASDAQ', price: 14500 },
+            { name: 'S&P 500', price: 4500 },
+            { name: 'GOLD', price: 1900 },
+            { name: 'OIL', price: 75 },
+        ];
 
-// Используем для хранения текущих цен
-let currentData = assets.map(asset => ({ ...asset }));
+        // Используем для хранения текущих цен
+        let currentData = assets.map(asset => ({ ...asset }));
 
-function getRandomChange() {
-    return (Math.random() * 4 - 2).toFixed(2); // от -2% до +2%
-}
+        function getRandomChange() {
+            return (Math.random() * 4 - 2).toFixed(2); // от -2% до +2%
+        }
 
-function updateCandles(data) {
-    const container = document.getElementById('candles');
-    container.innerHTML = data.map(item => {
-        const isUp = item.change >= 0;
-        const color = isUp ? 'bg-green-600' : 'bg-red-600';
-        const arrow = isUp ? '↑' : '↓';
+        function updateCandles(data) {
+            const container = document.getElementById('candles');
+            container.innerHTML = data.map(item => {
+                const isUp = item.change >= 0;
+                const color = isUp ? 'bg-green-600' : 'bg-red-600';
+                const arrow = isUp ? '↑' : '↓';
 
-        // Высота свечи от 60 до 160px в зависимости от % изменения
-        const height = 100 + item.change * 5;
+                // Высота свечи от 60 до 160px в зависимости от % изменения
+                const height = 100 + item.change * 5;
 
-        return `
-            <div class="candle">
-                <span class="text-sm font-bold">${item.name}</span>
-                <div class="candle-bar ${color}" style="height: ${Math.max(40, height)}px;"></div>
-                <span class="text-xs text-black">$${item.price.toFixed(2)}</span>
-                <span class="text-xs ${isUp ? 'text-green-600' : 'text-red-600'}">
-                    ${arrow}${Math.abs(item.change).toFixed(2)}%
-                </span>
-            </div>
-        `;
-    }).join('');
-}
+                return `
+                    <div class="candle">
+                        <span class="text-sm font-bold">${item.name}</span>
+                        <div class="candle-bar ${color}" style="height: ${Math.max(40, height)}px;"></div>
+                        <span class="text-xs text-black">$${item.price.toFixed(2)}</span>
+                        <span class="text-xs ${isUp ? 'text-green-600' : 'text-red-600'}">
+                            ${arrow}${Math.abs(item.change).toFixed(2)}%
+                        </span>
+                    </div>
+                `;
+            }).join('');
+        }
 
-function animateData() {
-    currentData = currentData.map(item => {
-        const change = parseFloat(getRandomChange());
-        const newPrice = item.price * (1 + change / 100);
-        return {
-            ...item,
-            price: newPrice,
-            change: change
-        };
-    });
-    updateCandles(currentData);
-}
+        function animateData() {
+            currentData = currentData.map(item => {
+                const change = parseFloat(getRandomChange());
+                const newPrice = item.price * (1 + change / 100);
+                return {
+                    ...item,
+                    price: newPrice,
+                    change: change
+                };
+            });
+            updateCandles(currentData);
+        }
 
-animateData();
-setInterval(animateData, 3000); // обновление каждые 3 сек
+        animateData();
+        setInterval(animateData, 3000); // обновление каждые 3 сек
     </script>
 </body>
 </html>
